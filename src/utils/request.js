@@ -4,8 +4,7 @@ import router from '@/router'
 import { Message } from 'element-ui'
 import { getTimeStamp } from '@/utils/auth'
 
-
-const TimeOut = 5
+const TimeOut = 7200
 
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
@@ -17,13 +16,14 @@ service.interceptors.request.use(config => {
   // config 请求的配置信息
   // 注入token
   if (store.getters.token) {
-    // if (IsTimeOut()) {
-    //   // 如果为true 过期了 登出
-    //   store.dispatch('user/loginOut')
-    //   // 跳转到登录页
-    //   router.push('/login')
-    //   return Promise.reject(new Error('token已过期!'))
-    // }
+    if (isTimeOut()) {
+      // 如果为true 过期了 退出登陆
+      store.dispatch('user/loginOut')
+      // 跳转到登录页
+      router.push('/login')
+
+      return Promise.reject(new Error('token已过期!'))
+    }
     config.headers['Authorization'] = `Bearer ${store.getters.token}`
   }
   return config  // 必须返回
@@ -48,7 +48,7 @@ service.interceptors.response.use(response => { // 成功回调 解构
 
 // 是否超时
 // 当前时间 - 缓存中时间 是否大于 TimeOut
-function IsTimeOut() {
+function isTimeOut() {
   const currentTime = Date.now()  // 当前时间
   const timeStamp = getTimeStamp()  // 缓存时间
   return (currentTime - timeStamp) / 1000 > TimeOut

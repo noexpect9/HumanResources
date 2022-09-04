@@ -51,7 +51,7 @@ const actions = {
     return res
   },
 
-  // 登出
+  // 退出登陆
   loginOut(context) {
     // 删除token
     context.commit('removeToken')
