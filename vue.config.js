@@ -36,6 +36,13 @@ module.exports = {
       warnings: false,
       errors: true
     },
+    // 配置反向代理 
+    proxy: {
+      '/api': {
+        target: 'http://ihrm-java.itheima.net/', // 代理服务器地址
+        changeOrigin: true, // 是否跨域
+      }
+    }
     // before: require('./mock/mock-server.js')
   },
   configureWebpack: {
