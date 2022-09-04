@@ -1,9 +1,12 @@
-import { getToken, setToken, removeToken } from '@/utils/auth'
-import { loginAPI } from '@/api/user'
+import { getToken, setToken, removeToken, setTimeStamp } from '@/utils/auth'
+import { loginAPI, getUserInfoAPI, getUserDetailByIdAPI } from '@/api/user'
+import { resetRouter } from '@/router'
 
 const state = {
   // 初始化 获取token
-  token: getToken()
+  token: getToken(),
+  // 定义空对象
+  userInfo: {}
 }
 
 const mutations = {
@@ -16,6 +19,16 @@ const mutations = {
   removeToken(state) {
     state.token = null
     removeToken()
+  },
+
+  // 获取用户信息 存储到vuex
+  setUserInfo(state, res) {
+    state.userInfo = res
+  },
+
+  // 移除用户信息
+  removeUserInfo(state) {
+    state.userInfo = {}
   }
 }
 
@@ -24,7 +37,32 @@ const actions = {
   async login(context, data) {
     const res = await loginAPI(data)
     context.commit('setToken', res)
+    setTimeStamp() // 设置时间戳
+  },
+
+  // 调用api获取用户信息
+  async getUserInfo(context) {
+    // 获取用户信息
+    const res = await getUserInfoAPI()
+    // 获取用户详情
+    const baseInfo = await getUserDetailByIdAPI(res.userId)
+    const baseRes = { ...res, ...baseInfo } // 扩展运算符
+    context.commit('setUserInfo', baseRes)
+    return res
+  },
+
+  // 登出
+  loginOut(context) {
+    // 删除token
+    context.commit('removeToken')
+    // 删除用户资料
+    context.commit('removeUserInfo')
+    // 重置路由
+    resetRouter()
+    //
+    // context.commit('')
   }
+
 }
 
 export default {

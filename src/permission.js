@@ -15,7 +15,7 @@ import 'nprogress/nprogress.css'
 const whiteList = ['/login', '/404']
 
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async (to, from, next) => {
   nprogress.start()
   if (store.getters.token) {
     // 如果有token
@@ -23,6 +23,13 @@ router.beforeEach((to, from, next) => {
       // 如果访问的是登录页
       next('/')  // 跳转到主页
     } else {
+      // 只有放行的时候才去获取用户资料
+      // 判断如果当前vuex中有用户的资料id 表示已经有资料 无需获取
+      if (!store.getters.userId) {
+        // 如果没有id 表示当前没有用户资料 异步获取
+        // getUserInfo为异步方法 所以获取资料为异步
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {
@@ -36,6 +43,6 @@ router.beforeEach((to, from, next) => {
   nprogress.done()
 })
 // 后置守卫
-router.afterEach(()=> {
+router.afterEach(() => {
   nprogress.done()
 })
