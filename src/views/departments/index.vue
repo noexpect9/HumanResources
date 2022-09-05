@@ -41,7 +41,7 @@
             </el-col>
             <el-col :span="4">
               <el-row type="flex" justify="end">
-                <el-row type="primary" class="elbtn">{{data.manager}}</el-row>
+                <el-row type="primary" class="elbtn">{{ data.manager }}</el-row>
                 <el-col>
                   <!-- 放置下拉菜单 -->
                   <el-dropdown>
@@ -52,9 +52,13 @@
                     <!-- 具名插槽 -->
                     <el-dropdown-menu slot="dropdown">
                       <!-- 下拉选项 -->
-                      <el-dropdown-item>添加子部门</el-dropdown-item>
-                      <el-dropdown-item>编辑部门</el-dropdown-item>
-                      <el-dropdown-item>删除部门</el-dropdown-item>
+                      <template slot-scope="scope">
+                        <el-dropdown-item @click.native="addDept">添加子部门</el-dropdown-item>
+                        <el-dropdown-item>编辑部门</el-dropdown-item>
+                        <el-dropdown-item @click.native="deleteDet(data.id)"
+                          >删除部门</el-dropdown-item
+                        >
+                      </template>
                     </el-dropdown-menu>
                   </el-dropdown>
                 </el-col>
@@ -65,20 +69,61 @@
         </el-tree>
       </el-card>
     </div>
+    <AddDept v-if="showDialog" ref="ref">
+
+    </AddDept>
   </div>
 </template>
 
 <script>
+import { getDepartmentsAPI, delDepartmentsAPI, addDepartmentsAPI } from '@/api/departments'
+import { tranListToTreeList } from '@/utils'
+import AddDept from './components/addDept.vue'
 export default {
   data() {
     return {
-      departs: [{ name: '总裁办', manager: '曹操', children: [{ name: '董事会', manager: '曹丕' }] },
-      { name: '行政部', manager: '刘备' },
-      { name: '人事部', manager: '孙权' }],
+      departs: [],
       defaultProps: {
         label: 'name' // 表示 从这个属性显示内容
-      }
+      },
+      showDialog: false
     }
+  },
+  components: {
+    AddDept
+  },
+  methods: {
+    async getDepartments() {
+      const res = await getDepartmentsAPI()
+      console.log(res);
+      this.departs = tranListToTreeList(res.depts, '')
+    },
+
+    async deleteDet(id) {
+      const confirmRes = await this.$confirm('You sure you want to delete it?', 'tips', {
+        confirmButtonText: 'yes',
+        cancelButtonText: 'no',
+        type: 'warning'
+      }).catch(err => err)
+      if (confirmRes === 'cancel') return
+      const res = await delDepartmentsAPI(id)
+      this.$message.success('delete success')
+      this.getDepartments()
+    },
+
+    addDept() {
+      this.showDialog = true
+      this.$nextTick(() => {
+        this.$refs.ref.openDia()
+      })
+      console.log(ref);
+      // this.$refs.ref.validate(valid => {
+      //   const res = addDepartmentsAPI(this.)
+      // })
+    }
+  },
+  created() {
+    this.getDepartments()
   }
 }
 </script>

@@ -115,3 +115,23 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+/**
+ * 将列表型数据转换为树形结构 递归
+ * @param {*} list 
+ * @param {*} rootVlaue 
+ * @returns 
+ */
+export function tranListToTreeList(list, rootValue) {
+  let arr = []
+  list.forEach(item => {
+    if(item.pid === rootValue) {  // 判断父节点下包含的子节点
+      const children = tranListToTreeList(list,item.id)
+      if(children.length) {   // 判断子节点长度 是否存在子节点
+        item.children = children
+      }
+        arr.push(item)
+    }
+  })
+  return arr
+}
