@@ -39,7 +39,7 @@ module.exports = {
     // 配置反向代理 
     proxy: {
       '/api': {
-        target: 'http://ihrm-java.itheima.net/', // 代理服务器地址
+        target: 'http://ihrm.itheima.net/', // 代理服务器地址https://www.apifox.cn/apidoc/shared-fa9274ac-362e-4905-806b-6135df6aa90e/doc-842135
         changeOrigin: true, // 是否跨域
       }
     }

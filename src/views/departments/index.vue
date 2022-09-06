@@ -95,7 +95,6 @@ export default {
   methods: {
     async getDepartments() {
       const res = await getDepartmentsAPI()
-      console.log(res);
       this.departs = tranListToTreeList(res.depts, '')
     },
 
@@ -116,7 +115,7 @@ export default {
       this.$nextTick(() => {
         this.$refs.ref.openDia()
       })
-      console.log(ref);
+      // console.log(ref);
       // this.$refs.ref.validate(valid => {
       //   const res = addDepartmentsAPI(this.)
       // })

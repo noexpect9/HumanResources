@@ -44,8 +44,8 @@
     <el-row slot="footer" type="flex" justify="center">
       <!-- 列被分为24 -->
       <el-col :span="6">
-        <el-button type="primary" size="small">确定</el-button>
-        <el-button size="small">取消</el-button>
+        <el-button type="primary" size="small" @click="isSubmit">确定</el-button>
+        <el-button size="small" @click="cancel">取消</el-button>
       </el-col>
     </el-row>
   </el-dialog>
@@ -76,6 +76,12 @@ export default {
   methods: {
     openDia() {
       this.showDialog = true
+    },
+    isSubmit() {
+      this.showDialog = false
+    },
+    cancel() {
+      this.showDialog = false
     }
   }
 }
