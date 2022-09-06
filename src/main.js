@@ -10,6 +10,7 @@ import router from './router'
 import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
+import Component from '@/components'
 
 /**
  * If you don't want to use mock-server
@@ -30,6 +31,10 @@ Vue.use(ElementUI, { locale })
 Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
+
+// 注册插件
+Vue.use(Component)
+
 Vue.config.productionTip = false
 
 new Vue({
