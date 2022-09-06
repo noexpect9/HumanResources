@@ -11,6 +11,7 @@ import '@/icons' // icon
 import '@/permission' // permission control
 import * as directives from '@/directives'
 import Component from '@/components'
+import * as filters from '@/filters' // 引入工具类
 
 /**
  * If you don't want to use mock-server
@@ -34,6 +35,11 @@ Object.keys(directives).forEach(key => {
 
 // 注册插件
 Vue.use(Component)
+
+// 注册全局过滤器
+Object.keys(filters).forEach(key => {
+  Vue.filter(key, filters[key])
+})
 
 Vue.config.productionTip = false
 
