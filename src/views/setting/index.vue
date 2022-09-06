@@ -5,7 +5,10 @@
         <el-tabs>
           <el-tab-pane label="角色管理">
             <el-row>
-              <el-button type="primary" style="margin-buttom: 50px"
+              <el-button
+                type="primary"
+                style="margin-buttom: 50px"
+                @click="showDialog = true"
                 >新增员工</el-button
               >
             </el-row>
@@ -26,7 +29,12 @@
               <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
                   <el-button size="small" type="success">分配权限</el-button>
-                  <el-button size="small" type="primary">编辑</el-button>
+                  <el-button
+                    size="small"
+                    type="primary"
+                    @click="editRole(scope.row.id)"
+                    >编辑</el-button
+                  >
                   <el-button
                     size="small"
                     type="danger"
@@ -99,12 +107,36 @@
         </el-tabs>
       </el-card>
     </div>
-    
+    <!-- 弹出框 -->
+    <el-dialog :visible="showDialog" title="编辑">
+      <el-form
+        :rules="rules"
+        ref="editFormRef"
+        :model="roleForm"
+        label-width="120px"
+      >
+        <el-form-item label="角色名称" prop="name">
+          <el-input v-model="roleForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="角色描述">
+          <el-input v-model="roleForm.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <!-- footer插槽 -->
+      <el-row slot="footer" type="flex" justify="center">
+        <el-col :span="6">
+          <el-button size="small" @click="btnCancel">取消</el-button>
+          <el-button size="small" type="primary" @click="btnSure"
+            >确定</el-button
+          >
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { updateRoleAPI, getRoleListAPI, delRoleAPI } from '@/api/setting'
+import { getRoleListAPI, delRoleAPI, getRoleDetailAPI, updateRoleAPI, addRoleAPI } from '@/api/setting'
 export default {
   data() {
     return {
@@ -141,6 +173,36 @@ export default {
         await delRoleAPI(id)
         this.getRoleList()
         this.$message.success('success delete!')
+      } catch (error) {
+        console.log(error);
+      }
+    },
+    async editRole(id) {
+      this.showDialog = true
+      const res = await getRoleDetailAPI(id)
+      this.roleForm = res
+      console.log(this.roleForm);
+    },
+    btnCancel() {
+      this.showDialog = false
+      this.roleForm = {
+        name: '',
+        descriptions: ''
+      }
+      this.$refs.roleForm.resetFields()
+      
+    },
+    async btnSure() {
+      try {
+        this.$refs.editFormRef.validate()
+        if (this.roleForm.id) {   // roleForm中有id就是编辑界面 没有就是新增
+          await updateRoleAPI(this.roleForm)  // 编辑
+        } else {
+          await addRoleAPI(this.roleForm)
+        }
+        this.getRoleList()
+        this.$message.success('success')
+        this.showDialog = false
       } catch (error) {
         console.log(error);
       }

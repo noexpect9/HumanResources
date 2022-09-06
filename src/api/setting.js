@@ -24,10 +24,38 @@ export function delRoleAPI(id) {
   })
 }
 
-
-export function updateRoleAPI(id) {
+/**
+ * 获取用户基本信息
+ * @returns 
+ */
+export function getRoleDetailAPI(id) {
   return request({
-    url: `/sys/role/${id}`,
-    method: 'put'
+    url: `/sys/role/${id}`
+  })
+}
+
+/**
+ * 编辑用户信息
+ * @param {*} id 
+ * @returns 
+ */
+export function updateRoleAPI(data) {
+  return request({
+    url: `/sys/role/${data.id}`,
+    method: 'put',
+    data
+  })
+}
+
+/**
+ * 新增用户接口
+ * @param {*} data 
+ * @returns 
+ */
+export function addRoleAPI(data) {
+  return request({
+    url: '/sys/role',
+    method: 'post',
+    data
   })
 }
