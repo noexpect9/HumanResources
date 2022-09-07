@@ -189,8 +189,8 @@ export default {
         name: '',
         descriptions: ''
       }
-      this.$refs.roleForm.resetFields()
-      
+      this.$refs.editFormRef.resetFields()
+      console.log(this.$refs.editFormRef);
     },
     async btnSure() {
       try {

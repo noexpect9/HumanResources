@@ -131,7 +131,6 @@ export default {
       this.showTree = true
       this.loading = true
       const res = await getDepartmentsAPI()
-      console.log(res);
       this.treeData = tranListToTreeList(res.depts, '')
       this.loading = false
     },

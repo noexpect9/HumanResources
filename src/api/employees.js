@@ -36,3 +36,16 @@ export function importStaffAPI(data) {
     data
   })
 }
+
+/**
+ * 保存用户信息
+ * @param {*} data 
+ * @returns 
+ */
+export function saveUserDataAPI(data) {
+  return request({
+    url: `/sys/user/${data.id}`,
+    method: 'put',
+    data
+  })
+}
