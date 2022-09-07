@@ -23,3 +23,16 @@ export function delStaffAPI(id) {
     method: 'delete'
   })
 }
+
+/**
+ * 导入excel
+ * @param {*} data 
+ * @returns 
+ */
+export function importStaffAPI(data) {
+  return request({
+    url: '/sys/user/batch',
+    method: 'post',
+    data
+  })
+}

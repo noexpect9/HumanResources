@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :visible="showDialog" title="新增">
+  <el-dialog :visible="showDialog" title="新增" @close="btnCancel">
     <el-form
       label-width="120px"
       :model="formData"

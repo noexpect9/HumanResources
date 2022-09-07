@@ -7,7 +7,7 @@
           <span slot="before">共{{ page.total }}条记录</span>
         </template>
         <template slot="after">
-          <el-button size="small" type="warning">导入</el-button>
+          <el-button size="small" type="warning" @click="$router.push('/import')">导入</el-button>
           <el-button size="small" type="danger">导出</el-button>
 
           <el-button size="small" type="primary" @click="showDialog = true"
