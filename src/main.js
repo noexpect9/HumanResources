@@ -12,6 +12,7 @@ import '@/permission' // permission control
 import * as directives from '@/directives'
 import Component from '@/components'
 import * as filters from '@/filters' // 引入工具类
+import Print from 'vue-print-nb'
 
 /**
  * If you don't want to use mock-server
@@ -40,6 +41,8 @@ Vue.use(Component)
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 })
+
+Vue.use(Print)
 
 Vue.config.productionTip = false
 
