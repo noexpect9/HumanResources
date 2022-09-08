@@ -50,6 +50,7 @@ export default {
     async btnOK() {
       await assginRoleAPI({ id: this.userId, roleIds: this.roleIds })
       this.$emit('update:showRoleDialog', false)
+      // this.$parent.showRoleDialog = false
     },
     btnCancel() {
       this.roleIds = []
