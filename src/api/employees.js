@@ -92,3 +92,16 @@ export function updateJobAPI(data) {
     data
   })
 }
+
+/**
+ * 用户分配角色
+ * @param {*} data 
+ * @returns 
+ */
+export function assginRoleAPI(data) {
+  return request({
+    url: '/sys/user/assignRoles',
+    method: 'put',
+    data
+  })
+}

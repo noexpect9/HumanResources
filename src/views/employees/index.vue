@@ -46,17 +46,27 @@
             sortable
             prop="enableState"
           >
-            <template slot-scope="{row}">
-              <el-switch  :value="row.enableState == 1"></el-switch>
+            <template slot-scope="{ row }">
+              <el-switch :value="row.enableState == 1"></el-switch>
             </template>
           </el-table-column>
           <el-table-column label="操作" fixed="right" width="280">
             <template slot-scope="scope">
-              <el-button type="text" size="small" @click="$router.push(`/employees/detail/${scope.row.id}`)">查看</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="$router.push(`/employees/detail/${scope.row.id}`)"
+                >查看</el-button
+              >
               <el-button type="text" size="small">转正</el-button>
               <el-button type="text" size="small">调岗</el-button>
               <el-button type="text" size="small">离职</el-button>
-              <el-button type="text" size="small">角色</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="authorize(scope.row.id)"
+                >授权</el-button
+              >
               <el-button
                 type="text"
                 size="small"
@@ -83,6 +93,11 @@
       </el-card>
     </div>
     <add-staff :show-dialog.sync="showDialog"></add-staff>
+    <assgin-role
+      :show-role-dialog.sync="showRoleDialog"
+      :user-id="userId"
+      ref="assginRoleRef"
+    ></assgin-role>
   </div>
 </template>
 
@@ -92,9 +107,10 @@ import employeeEnum from '@/api/constant/employees'
 // 引用子组件
 import addStaff from './components/addStaff.vue'
 import { formatDate } from '@/filters'
+import AssginRole from './components/assginRole.vue'
 export default {
   components: {
-    addStaff
+    addStaff, AssginRole
   },
   data() {
     return {
@@ -105,7 +121,9 @@ export default {
         pagesize: 10,
         total: 0
       },
-      showDialog: false
+      showDialog: false,
+      showRoleDialog: false,
+      userId: null
     }
   },
   created() {
@@ -176,6 +194,11 @@ export default {
         })
       })
       // return rows.map(item => Object.keys(headers).map(key => item[headers[key]]))
+    },
+    async authorize(id) {
+      this.userId = id  // props传值为异步
+      await this.$refs.assginRoleRef.getUserDetail(id)  // 父组件调用子组件方法
+      this.showRoleDialog = true
     }
   }
 }
