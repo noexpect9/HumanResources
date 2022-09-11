@@ -59,3 +59,16 @@ export function addRoleAPI(data) {
     data
   })
 }
+
+/**
+ * 用户分配权限
+ * @param {*} data 
+ * @returns 
+ */
+export function assginPermAPI(data) {
+  return request({
+    url: '/sys/role/assignPrem',
+    method: 'put',
+    data
+  })
+}

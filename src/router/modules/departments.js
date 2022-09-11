@@ -1,7 +1,7 @@
 import Layout from '@/layout'
 export default {
   path: '/demartmenets',
-  name: 'demartmenets',
+  name: 'departments',
   component: Layout,
   children: [{
     path: '',  // 二级默认路由

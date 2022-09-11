@@ -62,7 +62,7 @@ export const asyncRouter = [
 
 const createRouter = () => new Router({
   scrollBehavior: () => ({ y: 0 }),
-  routes: [...constantRoutes, ...asyncRouter]  // 动态路由与静态路由合并
+  routes: [...constantRoutes]  // 动态路由与静态路由合并
 })
 
 const router = createRouter()  // 实例化一个路由 new VueRouter

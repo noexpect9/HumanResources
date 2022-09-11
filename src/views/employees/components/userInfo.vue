@@ -319,7 +319,7 @@
         <el-form-item label="入学时间">
           <el-date-picker
             v-model="formData.enrolmentTime"
-            type="data"
+            type="date"
             placeholder="请输入时间"
             class="inputW"
             value-format="yyyy-MM-dd"
@@ -328,7 +328,7 @@
         <el-form-item label="毕业时间">
           <el-date-picker
             v-model="formData.graduationTime"
-            type="data"
+            type="date"
             placeholder="请输入时间"
             class="inputW"
             value-format="yyyy-MM-dd"

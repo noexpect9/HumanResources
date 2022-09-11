@@ -6,6 +6,7 @@ export default {
   children: [{
     path: '',  // 二级默认路由
     component: () => import('@/views/salarys'),
+    name: 'salarys',
     meta: {
       title: '工资',
       icon: 'money'

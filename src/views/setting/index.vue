@@ -28,7 +28,12 @@
               <el-table-column align="center" prop="description" label="描述" />
               <el-table-column align="center" label="操作">
                 <template slot-scope="scope">
-                  <el-button size="small" type="success">分配权限</el-button>
+                  <el-button
+                    size="small"
+                    type="success"
+                    @click="assginPermission(scope.row.id)"
+                    >分配权限</el-button
+                  >
                   <el-button
                     size="small"
                     type="primary"
@@ -132,11 +137,32 @@
         </el-col>
       </el-row>
     </el-dialog>
+    <!-- 分配权限弹框 -->
+    <el-dialog :visible="showPerDialog" title="分配权限" @close="btnPermCancel">
+      <el-tree
+        ref="treeRef"
+        :data="perData"
+        :props="defaulteProps"
+        default-expand-all
+        show-checkbox
+        check-strictly
+        :default-checked-keys="selectCheck"
+        node-key="id"
+      ></el-tree>
+      <el-row type="flex" justify="center" slot="footer">
+        <el-col :span="6">
+          <el-button type="primary" @click="btnPermOk">确定</el-button>
+          <el-button @click="btnPermCancel">取消</el-button>
+        </el-col>
+      </el-row>
+    </el-dialog>
   </div>
 </template>
 
 <script>
-import { getRoleListAPI, delRoleAPI, getRoleDetailAPI, updateRoleAPI, addRoleAPI } from '@/api/setting'
+import { getRoleListAPI, delRoleAPI, getRoleDetailAPI, updateRoleAPI, addRoleAPI, assginPermAPI } from '@/api/setting'
+import { getPermissionListAPI } from '@/api/permission'
+import { tranListToTreeList } from '@/utils'
 export default {
   data() {
     return {
@@ -150,7 +176,14 @@ export default {
       roleForm: {},
       rules: {
         name: [{ required: true, message: '角色名称不能为空', trigger: 'blur' }]
-      }
+      },
+      showPerDialog: false,
+      perData: [],
+      defaulteProps: {
+        label: 'name'
+      },
+      selectCheck: [],
+      roleID: null
     }
   },
   created() {
@@ -206,6 +239,23 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    async assginPermission(id) {
+      const res = await getPermissionListAPI()
+      this.perData = tranListToTreeList(res, '0')
+      this.roleID = id
+      const result = await getRoleDetailAPI(id)
+      this.selectCheck = result.permIds
+      this.showPerDialog = true
+    },
+    async btnPermOk() {
+      await assginPermAPI({ permIds: this.$refs.treeRef.getCheckedKeys(), id: this.roleID })
+      this.$message.success("分配成功")
+      this.showPerDialog = false
+    },
+    btnPermCancel() {
+      this.selectCheck = []
+      this.showPerDialog = false
     }
   }
 }

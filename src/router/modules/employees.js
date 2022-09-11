@@ -2,11 +2,12 @@
 import Layout from '@/layout'
 export default {
   path: '/employees',
-  name: 'employess',
+  name: 'employees',
   component: Layout,
   children: [{
     path: '',  // 二级默认路由
     component: () => import('@/views/employees/index.vue'),
+    name: 'employees',
     meta: {
       title: '员工管理',
       icon: 'people'

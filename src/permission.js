@@ -28,9 +28,15 @@ router.beforeEach(async (to, from, next) => {
       if (!store.getters.userId) {
         // 如果没有id 表示当前没有用户资料 异步获取
         // getUserInfo为异步方法 所以获取资料为异步
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        console.log(roles.menus);
+        const routes = await store.dispatch('permission/filterRoutes', roles.menus)
+        router.addRoutes(routes)
+        console.log(routes,'111111');
+        next(to.path)
+      } else {
+        next()
       }
-      next()
     }
   } else {
     // 没有token的情况下
