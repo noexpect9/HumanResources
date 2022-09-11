@@ -13,6 +13,7 @@ import * as directives from '@/directives'
 import Component from '@/components'
 import * as filters from '@/filters' // 引入工具类
 import Print from 'vue-print-nb'
+import checkPermission from '@/mixin/checkPermission.js'
 
 /**
  * If you don't want to use mock-server
@@ -43,6 +44,8 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.use(Print)
+
+Vue.mixin(checkPermission)
 
 Vue.config.productionTip = false
 

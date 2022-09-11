@@ -29,10 +29,9 @@ router.beforeEach(async (to, from, next) => {
         // 如果没有id 表示当前没有用户资料 异步获取
         // getUserInfo为异步方法 所以获取资料为异步
         const { roles } = await store.dispatch('user/getUserInfo')
-        console.log(roles.menus);
         const routes = await store.dispatch('permission/filterRoutes', roles.menus)
-        router.addRoutes(routes)
-        console.log(routes,'111111');
+        router.addRoutes([...routes,
+        { path: '*', redirect: '/404', hidden: true }]) // 404 page must be placed at the end !!!
         next(to.path)
       } else {
         next()

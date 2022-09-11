@@ -59,8 +59,8 @@ const actions = {
     context.commit('removeUserInfo')
     // 重置路由
     resetRouter()
-    //
-    // context.commit('')
+    // 命名空间的context指的不是全局的context
+    context.commit('permission/setRoutes', [], { root: true })
   }
 
 }
