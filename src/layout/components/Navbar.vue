@@ -9,12 +9,13 @@
       HumanResourceManagementSystem
       <span class="breadBtn">体验版</span>
     </div>
-
     <div class="right-menu">
+      <screen-full class="right-menu-item" />
+      <lang class="right-menu-item" />
       <el-dropdown class="avatar-container" trigger="click">
         <div class="avatar-wrapper">
           <img v-imagerror="defaultImg" :src="staffPhoto" class="user-avatar" />
-          <span class="name">{{name}}</span>
+          <span class="name">{{ name }}</span>
           <i class="el-icon-caret-bottom" style="color: #fff" />
         </div>
         <el-dropdown-menu slot="dropdown" class="user-dropdown">
@@ -36,6 +37,8 @@
 <script>
 import { mapGetters } from 'vuex'
 import Hamburger from '@/components/Hamburger'
+import ScreenFull from '@/components/ScreenFull'
+import Lang from '@/components/lang/index.vue'
 
 export default {
   data() {
@@ -44,7 +47,7 @@ export default {
     }
   },
   components: {
-    Hamburger
+    Hamburger, ScreenFull, Lang
   },
   computed: {
     ...mapGetters([
@@ -130,7 +133,7 @@ export default {
       height: 100%;
       font-size: 18px;
       color: #5a5e66;
-      vertical-align: text-bottom;
+      vertical-align: middle;
 
       &.hover-effect {
         cursor: pointer;
@@ -168,6 +171,10 @@ export default {
           font-size: 14px;
         }
       }
+    }
+    .right-menu-items {
+      background-color: #ffffff;
+      right: 200px;
     }
   }
 }
